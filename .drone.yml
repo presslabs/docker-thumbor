@@ -1,0 +1,13 @@
+pipeline:
+    publish-docker-image:
+        group: publish-artifacts
+        image: plugins/docker
+        mirror: https://mirror.gcr.io
+        registry: gcr.io
+        repo: gcr.io/pl-infra/thumbor
+        username: _json_key
+        secrets:
+          - source: GOOGLE_CREDENTIALS
+            target: DOCKER_PASSWORD
+        when:
+          event: push

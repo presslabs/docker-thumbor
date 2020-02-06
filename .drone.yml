@@ -5,7 +5,7 @@ pipeline:
         mirror: https://mirror.gcr.io
         registry: gcr.io
         repo: gcr.io/pl-infra/thumbor
-        tag: v6.7.0-pl.10
+        tag: v6.7.0-pl.11
         username: _json_key
         secrets:
           - source: GOOGLE_CREDENTIALS

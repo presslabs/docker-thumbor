@@ -43,13 +43,17 @@ ENV THUMBOR_VERSION=6.7.0
 ENV DOCKERIZE_VERSION=1.3.0
 
 RUN apt update && apt install --no-install-recommends -y \
-       gcc curl python-virtualenv libcurl4-openssl-dev python-dev libssl-dev libglib2.0-0 gifsicle libpng-dev \
+       locales gcc curl python-virtualenv libcurl4-openssl-dev python-dev libssl-dev libglib2.0-0 gifsicle libpng-dev \
     && python /usr/lib/python2.7/dist-packages/virtualenv.py /opt/thumbor \
     && /opt/thumbor/bin/pip install thumbor==$THUMBOR_VERSION opencv-contrib-python==3.3.0.9 \
     && /opt/thumbor/bin/pip install -I https://github.com/thumbor/thumbor-plugins/archive/master.zip \
     && apt-get autoremove --purge -y libcurl4-openssl-dev python-dev libssl-dev
 
 COPY ./docker /usr/local/docker
+
+RUN locale-gen C.UTF-8
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
 
 RUN /usr/local/docker/build-scripts/install-dockerize
 

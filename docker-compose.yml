@@ -1,0 +1,14 @@
+version: '3'
+services:
+    thumbor:
+        build: .
+        environment:
+            THUMBOR_PROCS: "1"
+            THUMBOR_CUSTOM_LOADER: "custom_loaders.proxy"
+            THUMBOR_BIND_ADDRESS: "0.0.0.0"
+            THUMBOR_ALLOW_UNSAFE_URL: "true"
+            THUMBOR_PROXY_URL: "https://picsum.photos/"
+        volumes:
+            - ./custom_loaders:/opt/thumbor/lib/python2.7/site-packages/custom_loaders
+        ports:
+            - "10801:10801"

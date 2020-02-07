@@ -1,0 +1,15 @@
+#!/usr/bin/python
+
+import os
+import subprocess
+import sys
+
+def main():
+    os.mkdir("/tmp/etc")
+    os.mkdir("/tmp/nginx")
+    subprocess.call(["/usr/local/bin/dockerize", "-template", "/etc/templates:/tmp/etc"],
+                    stdout=sys.stdout, stderr=sys.stderr)
+    os.execlp(*sys.argv[1:])
+
+if __name__ == "__main__":
+    main()

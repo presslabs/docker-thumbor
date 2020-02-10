@@ -108,7 +108,7 @@ RUN set -ex \
     && python /usr/lib/python2.7/dist-packages/virtualenv.py /opt/thumbor \
     && /opt/thumbor/bin/pip install --disable-pip-version-check --upgrade pip
 
-ENV THUMBOR_VERSION=6.7.0
+ENV THUMBOR_VERSION=6.7.1
 RUN set -ex \
     && /opt/thumbor/bin/pip install --disable-pip-version-check thumbor==$THUMBOR_VERSION opencv-contrib-python-headless envparse \
     && /opt/thumbor/bin/pip install --disable-pip-version-check -I https://github.com/thumbor/thumbor-plugins/archive/master.zip

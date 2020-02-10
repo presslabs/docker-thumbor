@@ -174,7 +174,7 @@ COPY --from=build-venv /usr/bin/ldd /usr/bin/ldd
 # Copy the virtualenv into a distroless image
 FROM gcr.io/distroless/python2.7-debian10:debug
 
-ENV PATH="/opt/thumbor/bin:/opt/mozjpeg/bin:/opt/pngquant/bin:/opt/libtiff/bin:${PATH}"
+ENV PATH="/opt/thumbor/bin:/opt/mozjpeg/bin:/opt/pngquant/bin:/opt/libtiff/bin:/opt/gifsicle/bin:${PATH}"
 ENV LD_LIBRARY_PATH=/opt/mozjpeg/lib64:/opt/pngquant/lib:/opt/libtiff/lib
 
 COPY --from=deps / /

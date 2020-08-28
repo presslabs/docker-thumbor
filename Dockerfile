@@ -108,10 +108,13 @@ RUN set -ex \
     && python /usr/lib/python2.7/dist-packages/virtualenv.py /opt/thumbor \
     && /opt/thumbor/bin/pip install --disable-pip-version-check --upgrade pip
 
+ENV LANG=C.UTF-8
+ENV PYTHONIOENCODING=UTF-8
+ENV PYTHONUNBUFFERED=1
 ENV THUMBOR_VERSION=6.7.1
 RUN set -ex \
     && /opt/thumbor/bin/pip install --disable-pip-version-check thumbor==$THUMBOR_VERSION opencv-contrib-python-headless envparse \
-    && /opt/thumbor/bin/pip install --disable-pip-version-check -I https://github.com/thumbor/thumbor-plugins/archive/master.zip
+    && /opt/thumbor/bin/pip install --disable-pip-version-check -I https://github.com/thumbor/thumbor-plugins/archive/386fbd4a96f99e79c0d055d0f23bca50465ec9fc.zip
 
 ARG SIMD_LEVEL=avx2
 # workaround for https://github.com/python-pillow/Pillow/issues/3441
@@ -140,8 +143,8 @@ RUN PILLOW_VERSION=$(/opt/thumbor/bin/python -c 'import PIL; print(PIL.__version
 
 COPY docker/build-scripts /usr/local/docker/build-scripts
 
-RUN DOCKERIZE_VERSION=1.3.0 /usr/local/docker/build-scripts/install-dockerize
-RUN SUPERVISORD_VERSION=0.6.7 /usr/local/docker/build-scripts/install-supervisord
+RUN DOCKERIZE_VERSION=2.1.0 /usr/local/docker/build-scripts/install-dockerize
+RUN SUPERVISORD_VERSION=0.6.3 /usr/local/docker/build-scripts/install-supervisord
 
 COPY src/presslabs /opt/thumbor/lib/python2.7/site-packages/presslabs
 

@@ -15,13 +15,31 @@ from tornado.concurrent import return_future
 
 DEFAULT_URL_PREFIX = "http://localhost"
 
+
+def _remove_prefix(prefix, s):
+    if s.startswith(prefix):
+        return s[len(prefix) :]
+    return s
+
+
 def _normalize_url(url):
     prefix = os.environ.get("THUMBOR_URL_PREFIX") or DEFAULT_URL_PREFIX
     path_prefix = os.environ.get("THUMBOR_URL_PREFIX_PATH", "")
     if path_prefix:
         url = "%s/%s" % (prefix, url) if url.startswith(path_prefix) else url
     url = http_loader.quote_url(url)
-    return url if url.startswith('http') else 'http://%s' % url
+
+    # some proxies might remove the double slash so we check the
+    # scheme using single slash
+    scheme = "https" if url.startswith("https:/") else "http"
+
+    # normalize the url scheme for proxies removing double slashes
+    url = _remove_prefix("http:/", url)
+    url = _remove_prefix("https:/", url)
+
+    url = scheme + "://" + _remove_prefix("/", url)
+
+    return url
 
 
 def validate(context, url):
@@ -34,7 +52,9 @@ def return_contents(response, url, callback, context):
 
 @return_future
 def load(context, url, callback):
-    return http_loader.load_sync(context, url, callback, normalize_url_func=_normalize_url)
+    return http_loader.load_sync(
+        context, url, callback, normalize_url_func=_normalize_url
+    )
 
 
 def encode(string):
